@@ -50,10 +50,11 @@ const ActivitiesListPage = ({user, userID, flowuser}) => {
                     if (data[0]['Neighborhood'] === 'None'){
                         setActivities([])
                         
+                    } else {
+                        setActivities(data)
+                        await getGeodata2()
                     }
-                 } else {
-                    setActivities(data)
-                    await getGeodata2()
+                  
                 }
             }
             

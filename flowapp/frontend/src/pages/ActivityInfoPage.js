@@ -82,6 +82,8 @@ const ActivityInfoPage = ({user}) => {
         window.location.reload()
     }
 
+    
+
     let handleDelete = (e) => {
         fetch(`/api/activities/${id}/delete/`, {
             method: 'POST',
@@ -123,14 +125,14 @@ const ActivityInfoPage = ({user}) => {
         )
         
     }
-
+    
 
     if (activity === null) {
         return ( <Spinner animation="border" role="status">
         <span className="visually-hidden">Loading...</span>
       </Spinner>);
     } else if (String(user) === String(activity.created_by.username)) {
-
+        
         const date = moment(activity.date, 'YYYY-MM-DD').format('Do MMMM YYYY')
         const f_date = moment(date, 'Do MMMM YYYY').format('dddd')
         const f_time = moment(activity.time, "HH:mm:ss").format("hh:mm A");
@@ -246,9 +248,11 @@ const ActivityInfoPage = ({user}) => {
             </Container> 
         )
     } else {
+        
         const date = moment(activity.date, 'YYYY-MM-DD').format('Do MMMM YYYY')
         const f_date = moment(date, 'Do MMMM YYYY').format('dddd')
         const f_time = moment(activity.time, "HH:mm:ss").format("hh:mm A");
+        const checkExists = element => element == String(user);
         return (
             <Container className="mt-4">
               <Button onClick={() => {
@@ -259,7 +263,7 @@ const ActivityInfoPage = ({user}) => {
                     <div style={{display: "flex", flex: 1}}>
                         <div className="img-square-wrapper">
                         {activity.image != null &&
-                            <img src="//placehold.it/200" alt="" />
+                            <img width="170px" height="160px" class="image-fit-contain mt-5" src={activity.image} alt="" />
                         }
                         </div>
                         <div className="card-body">
@@ -276,8 +280,10 @@ const ActivityInfoPage = ({user}) => {
                         <div className="card-footer">
                         <div className="row" style={{display: "flex", justifyContent: "space-between"}}>
                             <small className="text-muted">Created by {activity.created_by.username}</small>
+                            {activity.attendees.some(checkExists) ? 
                             <Button size="sm" variant="outline-success" className="align-self-end" 
                                     onClick={handleAttend}><i class="bi bi-check2-square"></i> Attend</Button>
+                            : <Button size="sm" variant="outline-success" disabled className="align-self-end"><i class="bi bi-person-check-fill"></i> Attending</Button>}
                         </div>
                     </div>
                         </div>

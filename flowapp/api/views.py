@@ -89,7 +89,7 @@ def flowuser(request):
 @api_view(['GET'])
 def getUserActivities(request, pk):
     user = FlowUser.objects.get(pk=pk)
-    ua = Activities.objects.filter(Q(created_by=user.user) & Q(attendees__id=user.pk)).order_by('date')[:2]
+    ua = Activities.objects.filter(Q(created_by=user.user) | Q(attendees__id=user.pk)).distinct().order_by('date')[:2]
     serializer = ActivitiesListSerializer(ua, many=True)
     return Response(serializer.data)
 
@@ -97,7 +97,7 @@ def getUserActivities(request, pk):
 @api_view(['GET'])
 def getUserCompletedActivities(request, pk):
     user = FlowUser.objects.get(pk=pk)
-    ua = CompletedActivities.objects.filter(Q(created_by=user.user) & Q(participants__id=user.pk)).order_by('date')[:2]
+    ua = CompletedActivities.objects.filter(Q(created_by=user.user) | Q(participants__id=user.pk)).distinct().order_by('date')[:2]
     serializer = CompletedActivitiesListSerializer(ua, many=True)
     return Response(serializer.data)
 

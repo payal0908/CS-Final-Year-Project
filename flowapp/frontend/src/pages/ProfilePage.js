@@ -146,9 +146,10 @@ const ProfilePage = () => {
                                     <img src={urlUser.display_img} alt="Admin" class="rounded-circle" width="150" />
                                     <div class="mt-3">
                                         <h4>{urlUser.name}</h4>
+                                        {urlUser.user === currUser &&
                                         <Button onClick={() => {
                                             navigate('/calendar/')
-                                        }} type="primary" shape='round'>View Calendar</Button>
+                                        }} type="primary" shape='round'>View Calendar</Button>}
                                     </div>
                                 </div>
                             </div>
